@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard | Literacy Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Maintained your original navbar styles */
+        body, html {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .header {
+            padding: 5px;
+            color: #ffffff;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #add8e6;
+            z-index: 1000;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .logo img {
+            height: 100px;
+        }
+        .menu {
+            display: flex;
+            position: relative;
+            color: aqua;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            z-index: 1001;
+            border-radius: 8px;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #e1f5fe;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Dashboard styles */
+        .dashboard-container {
+            margin-top: 130px;
+            padding: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .user-info {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-details h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .user-details p {
+            color: #7f8c8d;
+            margin: 5px 0 0;
+        }
+
+        .user-status {
+            background-color: #2ecc71;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Post Creation Form */
+        .post-form {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .post-form h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Posts Feed */
+        .posts-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .posts-container h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .post {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .post-meta h4 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .post-meta p {
+            margin: 5px 0 0;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        .post-media {
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .post-media img, .post-media video {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #95a5a6;
+        }
+
+        /* Messaging Section */
+        .messages-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .messages-container h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .message {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            margin-bottom: 15px;
+        }
+
+        .message:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .message-time {
+            color: #95a5a6;
+            font-size: 14px;
+        }
+
+        .message-content {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .reply-form {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .reply-btn {
+            background-color: #f8f9fa;
+            color: #3498db;
+            border: 1px solid #3498db;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reply-btn:hover {
+            background-color: #e1f5fe;
+        }
+
+        /* File upload styles */
+        .file-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            border-color: #3498db;
+            background-color: rgba(52,152,219,0.05);
+        }
+
+        .file-input {
+            position: absolute;
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .file-preview {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .file-preview img, .file-preview video {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+        }
+
+        .remove-file {
+            display: inline-block;
+            margin-top: 10px;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <a href="home.html" class="logo"><img src="Gallery/Literacy Connect.png" alt="Logo"></a>
+            <div class="menu">
+                <a href="home.html">HOME</a>
+                <a href="about.html">ABOUT</a>
+                <div class="dropdown">
+                    <a href="#">DASHBOARD</a>
+                    <div class="dropdown-content">
+                        <a href="student-dashboard.html">STUDENT DASHBOARD</a>
+                        <a href="teacher-dashboard.html">TEACHER DASHBOARD</a>
+                        <a href="donate.html">DONATION DASHBOARD</a>
+                        <a href="volunteer.html">VOLUNTEER DASHBOARD</a>
+                    </div>
+                </div>
+                <a href="contact.html">CONTACT</a>
+                <a href="settings.html">SETTINGS</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Teacher Dashboard</h1>
+        </div>
+
+        <!-- User Info Section -->
+        <div class="user-info">
+            <div class="user-details">
+                <h2 id="teacher-name">Loading...</h2>
+                <p id="teacher-email">Loading...</p>
+            </div>
+            <div class="user-status">
+                <span class="user-status">Teacher Account</span>
+            </div>
+        </div>
+
+        <!-- Post Creation Form -->
+        <div class="post-form">
+            <h3>Create New Post</h3>
+            <form id="postForm">
+                <div class="form-group">
+                    <label for="postTitle">Post Title</label>
+                    <input type="text" id="postTitle" class="form-control" placeholder="Enter a title for your post" required>
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Post Content</label>
+                    <textarea id="postContent" class="form-control" placeholder="Write your message to students..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Add Media (Optional)</label>
+                    <div class="file-input-container">
+                        <label for="mediaUpload" class="file-input-label">
+                            <i class="fas fa-cloud-upload-alt"></i> Click to upload images, slides, or videos
+                        </label>
+                        <input type="file" id="mediaUpload" class="file-input" accept="image/*, video/*, .pdf, .ppt, .pptx">
+                        <div class="file-preview" id="filePreview"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Publish Post</button>
+            </form>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-container">
+            <h3>Your Recent Posts</h3>
+            <div id="postsFeed">
+                <div class="empty-state">
+                    <p>You haven't posted anything yet. Create your first post above!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages from Students -->
+        <div class="messages-container">
+            <h3>Messages from Students</h3>
+            <div id="messagesList">
+                <div class="empty-state">
+                    <p>No messages from students yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://qmkkbibzvmzsrobttcbc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFta2tiaWJ6dm16c3JvYnR0Y2JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1NDU3NzEsImV4cCI6MjA2NjEyMTc3MX0.7gVbgwruQd9yFUoUIS9DXhlBY7cPKxSQsTwcUR7NVOs';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Check authentication and role on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user is logged in and is a teacher
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            
+            if (authError || !user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Verify user is a teacher
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('role, username')
+                .eq('auth_id', user.id)
+                .single();
+
+            if (userError || userData?.role !== 'teacher') {
+                alert('Only teachers can access this dashboard');
+                window.location.href = 'home.html';
+                return;
+            }
+
+            // Display teacher info
+            document.getElementById('teacher-name').textContent = userData.username || user.email.split('@')[0];
+            document.getElementById('teacher-email').textContent = user.email;
+
+            // Load posts and messages
+            await loadTeacherPosts(user.id);
+            await loadStudentMessages(user.id);
+
+            // Set up file upload preview
+            setupFileUpload();
+            
+            // Set up post submission
+            setupPostForm(user.id, userData.username || user.email.split('@')[0]);
+        });
+
+        // Load teacher's posts
+        async function loadTeacherPosts(teacherId) {
+            const { data: posts, error } = await supabase
+                .from('posts')
+                .select('*')
+                .eq('teacher_id', teacherId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error loading posts:', error);
+                return;
+            }
+
+            const postsFeed = document.getElementById('postsFeed');
+            
+            if (posts.length === 0) {
+                postsFeed.innerHTML = `
+                    <div class="empty-state">
+                        <p>You haven't posted anything yet. Create your first post above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            postsFeed.innerHTML = '';
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                
+                const date = new Date(post.created_at);
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const dateString = date.toLocaleDateString('en-US', options);
+                
+                let postHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">${post.teacher_name.charAt(0)}</div>
+                        <div class="post-meta">
+                            <h4>${post.teacher_name}</h4>
+                            <p>${dateString}</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h4>${post.title}</h4>
+                        <p>${post.content.replace(/\n/g, '<br>')}</p>
+                    </div>
+                `;
+                
+                if (post.media_url) {
+                    if (post.media_type.startsWith('image/')) {
+                        postHTML += `
+                            <div class="post-media">
+                                <img src="${post.media_url}" alt="Post image">
+                            </div>
+                        `;
+                    } else if (post.media_type.startsWith('video/')) {
+                        postHTML += `
+                            <div class="post-media">
+                                <video controls>
+                                    <source src="${post.media_url}" type="${post.media_type}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        `;
+                    } else {
+                        postHTML += `
+                            <div class="post-media">
+                                <p><strong>Attached file:</strong> <a href="${post.media_url}" target="_blank">Download</a></p>
+                            </div>
+                        `;
+                    }
+                }
+                
+                postElement.innerHTML = postHTML;
+                postsFeed.appendChild(postElement);
+            });
+        }
+
+        // Load messages from students
+        async function loadStudentMessages(teacherId) {
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('*, students:student_id(username, email)')
+                .eq('teacher_id', teacherId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error loading messages:', error);
+                return;
+            }
+
+            const messagesList = document.getElementById('messagesList');
+            
+            if (messages.length === 0) {
+                messagesList.innerHTML = `
+                    <div class="empty-state">
+                        <p>No messages from students yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            messagesList.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                
+                const date = new Date(message.created_at);
+                const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const dateString = date.toLocaleDateString('en-US', options);
+                
+                messageElement.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-sender">From: ${message.students.username || message.students.email}</span>
+                        <span class="message-time">${dateString}</span>
+                    </div>
+                    <div class="message-content">
+                        ${message.content.replace(/\n/g, '<br>')}
+                    </div>
+                    <button class="reply-btn" data-message-id="${message.id}" data-student-id="${message.student_id}">Reply</button>
+                    <form class="reply-form" id="reply-form-${message.id}">
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Write your reply..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Reply</button>
+                    </form>
+                `;
+                
+                messagesList.appendChild(messageElement);
+            });
+
+            // Set up reply buttons
+            document.querySelectorAll('.reply-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const formId = `reply-form-${this.getAttribute('data-message-id')}`;
+                    const form = document.getElementById(formId);
+                    form.style.display = form.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+
+            // Set up reply forms
+            document.querySelectorAll('.reply-form').forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const messageId = this.id.split('-')[2];
+                    const studentId = this.previousElementSibling.getAttribute('data-student-id');
+                    const content = this.querySelector('textarea').value;
+                    
+                    // Send reply (in a real app, you would save this to your database)
+                    const { error } = await supabase
+                        .from('messages')
+                        .insert([
+                            { 
+                                teacher_id: teacherId,
+                                student_id: studentId,
+                                content: content,
+                                is_reply: true,
+                                original_message_id: messageId
+                            }
+                        ]);
+                    
+                    if (error) {
+                        alert('Failed to send reply. Please try again.');
+                        return;
+                    }
+                    
+                    alert('Reply sent successfully!');
+                    this.style.display = 'none';
+                    this.querySelector('textarea').value = '';
+                    await loadStudentMessages(teacherId);
+                });
+            });
+        }
+
+        // Set up file upload preview
+        function setupFileUpload() {
+            const mediaUpload = document.getElementById('mediaUpload');
+            const filePreview = document.getElementById('filePreview');
+            
+            mediaUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                filePreview.innerHTML = '';
+                filePreview.style.display = 'block';
+                
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        filePreview.appendChild(img);
+                        
+                        const removeBtn = document.createElement('span');
+                        removeBtn.className = 'remove-file';
+                        removeBtn.textContent = 'Remove image';
+                        removeBtn.onclick = function() {
+                            filePreview.innerHTML = '';
+                            filePreview.style.display = 'none';
+                            mediaUpload.value = '';
+                        };
+                        filePreview.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                } 
+                else if (file.type.startsWith('video/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        filePreview.appendChild(video);
+                        
+                        const removeBtn = document.createElement('span');
+                        removeBtn.className = 'remove-file';
+                        removeBtn.textContent = 'Remove video';
+                        removeBtn.onclick = function() {
+                            filePreview.innerHTML = '';
+                            filePreview.style.display = 'none';
+                            mediaUpload.value = '';
+                        };
+                        filePreview.appendChild(removeBtn);
+                    };
+                    reader.readAsDataURL(file);
+                } 
+                else {
+                    const fileInfo = document.createElement('div');
+                    fileInfo.innerHTML = `
+                        <p><strong>File:</strong> ${file.name}</p>
+                        <p><strong>Type:</strong> ${file.type || 'document'}</p>
+                    `;
+                    filePreview.appendChild(fileInfo);
+                    
+                    const removeBtn = document.createElement('span');
+                    removeBtn.className = 'remove-file';
+                    removeBtn.textContent = 'Remove file';
+                    removeBtn.onclick = function() {
+                        filePreview.innerHTML = '';
+                        filePreview.style.display = 'none';
+                        mediaUpload.value = '';
+                    };
+                    filePreview.appendChild(removeBtn);
+                }
+            });
+        }
+
+        // Set up post submission
+        function setupPostForm(teacherId, teacherName) {
+            const postForm = document.getElementById('postForm');
+            const postsFeed = document.getElementById('postsFeed');
+            const mediaUpload = document.getElementById('mediaUpload');
+            const filePreview = document.getElementById('filePreview');
+            
+            postForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('postTitle').value;
+                const content = document.getElementById('postContent').value;
+                const file = mediaUpload.files[0];
+                
+                // Upload file if present
+                let mediaUrl = null;
+                let mediaType = null;
+                
+                if (file) {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${teacherId}-${Date.now()}.${fileExt}`;
+                    const filePath = `posts/${fileName}`;
+                    
+                    const { data: uploadData, error: uploadError } = await supabase
+                        .storage
+                        .from('post-media')
+                        .upload(filePath, file);
+                    
+                    if (uploadError) {
+                        alert('Failed to upload file. Please try again.');
+                        return;
+                    }
+                    
+                    const { data: urlData } = supabase
+                        .storage
+                        .from('post-media')
+                        .getPublicUrl(filePath);
+                    
+                    mediaUrl = urlData.publicUrl;
+                    mediaType = file.type;
+                }
+                
+                // Save post to database
+                const { error } = await supabase
+                    .from('posts')
+                    .insert([
+                        { 
+                            teacher_id: teacherId,
+                            teacher_name: teacherName,
+                            title: title,
+                            content: content,
+                            media_url: mediaUrl,
+                            media_type: mediaType
+                        }
+                    ]);
+                
+                if (error) {
+                    alert('Failed to publish post. Please try again.');
+                    return;
+                }
+                
+                // Refresh posts
+                await loadTeacherPosts(teacherId);
+                
+                // Reset form
+                postForm.reset();
+                filePreview.innerHTML = '';
+                filePreview.style.display = 'none';
+                
+                // Show success message
+                alert('Your post has been published successfully!');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Literacy Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Maintained your original navbar styles */
+        body, html {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .header {
+            padding: 5px;
+            color: #ffffff;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #add8e6;
+            z-index: 1000;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .logo img {
+            height: 100px;
+        }
+        .menu {
+            display: flex;
+            position: relative;
+            color: aqua;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            z-index: 1001;
+            border-radius: 8px;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #e1f5fe;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Settings page styles */
+        .settings-container {
+            margin-top: 130px;
+            padding: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-header h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 25px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .profile-info h3 {
+            margin: 0 0 5px;
+            color: #2c3e50;
+            font-size: 20px;
+        }
+
+        .profile-info p {
+            margin: 0;
+            color: #7f8c8d;
+        }
+
+        .account-status {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-section h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-label i {
+            margin-right: 15px;
+            color: #3498db;
+            width: 20px;
+            text-align: center;
+        }
+
+        .settings-value {
+            color: #7f8c8d;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .actions-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <a href="home.html" class="logo"><img src="Gallery/Literacy Connect.png" alt="Logo"></a>
+            <div class="menu">
+                <a href="home.html">HOME</a>
+                <a href="about.html">ABOUT</a>
+                <div class="dropdown">
+                    <a href="#">DASHBOARD</a>
+                    <div class="dropdown-content">
+                        <a href="student-dashboard.html">STUDENT DASHBOARD</a>
+                        <a href="teacher-dashboard.html">TEACHER DASHBOARD</a>
+                        <a href="donate.html">DONATION DASHBOARD</a>
+                        <a href="volunteer.html">VOLUNTEER DASHBOARD</a>
+                    </div>
+                </div>
+                <a href="contact.html">CONTACT</a>
+                <a href="settings.html">SETTINGS</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="settings-container">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2>Account Settings</h2>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-avatar" id="user-avatar">JD</div>
+                <div class="profile-info">
+                    <h3 id="username-display">John Doe</h3>
+                    <p id="email-display">john.doe@example.com</p>
+                    <span class="account-status" id="account-status">Active Account</span>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-user"></i>
+                        <span>Username</span>
+                    </div>
+                    <div class="settings-value" id="username-value">johndoe</div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email Address</span>
+                    </div>
+                    <div class="settings-value" id="email-value">john.doe@example.com</div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-user-tag"></i>
+                        <span>Account Type</span>
+                    </div>
+                    <div class="settings-value" id="role-value">Teacher</div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Member Since</span>
+                    </div>
+                    <div class="settings-value" id="join-date">June 15, 2023</div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Security</h3>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-lock"></i>
+                        <span>Password</span>
+                    </div>
+                    <div class="settings-value">
+                        <button class="btn btn-primary" id="change-password-btn">Change Password</button>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Two-Factor Authentication</span>
+                    </div>
+                    <div class="settings-value">
+                        <span style="color: #e74c3c;">Disabled</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-container">
+                <button class="btn btn-danger" id="logout-btn">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="current-password" style="display: block; margin-bottom: 8px;">Current Password</label>
+                    <input type="password" id="current-password" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="new-password" style="display: block; margin-bottom: 8px;">New Password</label>
+                    <input type="password" id="new-password" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="confirm-password" style="display: block; margin-bottom: 8px;">Confirm New Password</label>
+                    <input type="password" id="confirm-password" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-password" style="background-color: #eee;">Cancel</button>
+                <button class="btn btn-primary" id="save-password">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://qmkkbibzvmzsrobttcbc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFta2tiaWJ6dm16c3JvYnR0Y2JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1NDU3NzEsImV4cCI6MjA2NjEyMTc3MX0.7gVbgwruQd9yFUoUIS9DXhlBY7cPKxSQsTwcUR7NVOs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // DOM elements
+        const logoutBtn = document.getElementById('logout-btn');
+        const changePasswordBtn = document.getElementById('change-password-btn');
+        const passwordModal = document.getElementById('password-modal');
+        const closeModal = document.getElementById('close-modal');
+        const cancelPassword = document.getElementById('cancel-password');
+        const savePassword = document.getElementById('save-password');
+
+        // Load user data
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user is logged in
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                // Redirect to login if not authenticated
+                window.location.href = 'Signup Login.html';
+                return;
+            }
+
+            // Display user info
+            document.getElementById('user-avatar').textContent = 
+                user.user_metadata?.username?.charAt(0).toUpperCase() || 
+                user.email?.charAt(0).toUpperCase() || 'U';
+            
+            document.getElementById('username-display').textContent = 
+                user.user_metadata?.username || user.email.split('@')[0];
+            
+            document.getElementById('email-display').textContent = user.email;
+            document.getElementById('username-value').textContent = 
+                user.user_metadata?.username || user.email.split('@')[0];
+            document.getElementById('email-value').textContent = user.email;
+            document.getElementById('role-value').textContent = 
+                user.user_metadata?.role ? 
+                user.user_metadata.role.charAt(0).toUpperCase() + user.user_metadata.role.slice(1) : 
+                'User';
+            
+            // Format created_at date
+            const createdAt = new Date(user.created_at);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('join-date').textContent = createdAt.toLocaleDateString('en-US', options);
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', async function() {
+            const { error } = await supabase.auth.signOut();
+            
+            if (error) {
+                console.error('Logout error:', error);
+                alert('Failed to log out. Please try again.');
+            } else {
+                // Clear any stored user data
+                localStorage.removeItem('supabase.auth.token');
+                
+                // Redirect to login page
+                window.location.href = 'Signup Login.html';
+            }
+        });
+
+        // Password modal functionality
+        changePasswordBtn.addEventListener('click', function() {
+            passwordModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', function() {
+            passwordModal.style.display = 'none';
+        });
+
+        cancelPassword.addEventListener('click', function() {
+            passwordModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === passwordModal) {
+                passwordModal.style.display = 'none';
+            }
+        });
+
+        // Change password functionality
+        savePassword.addEventListener('click', async function() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Basic validation
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                // Update password
+                const { data, error } = await supabase.auth.updateUser({
+                    password: newPassword
+                });
+
+                if (error) throw error;
+
+                alert('Password updated successfully!');
+                passwordModal.style.display = 'none';
+                
+                // Clear password fields
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+            } catch (error) {
+                console.error('Password change error:', error);
+                alert('Failed to change password: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

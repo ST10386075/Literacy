@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literacy Connect - Bridging the Gap in Education</title>
+    <style>
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6c757d;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            padding: 5px;
+            color: #ffffff;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+        
+        .navbar a:hover {
+            color: var(--primary-color);
+        }
+        
+        .logo img {
+            height: 80px;
+            transition: transform 0.3s;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        
+        .menu {
+            display: flex;
+            position: relative;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            z-index: 1001;
+        }
+        
+        .dropdown-content a {
+            color: var(--dark-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .hero {
+            width: 100%;
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('Gallery/Library.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 100px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 30px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        
+        .btn:hover {
+            background: #1a68d1;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            padding: 80px 0;
+            background-color: var(--light-color);
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: var(--dark-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+        }
+        
+        .features-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .stats {
+            padding: 80px 0;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stat-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+            text-align: center;
+        }
+        
+        .testimonial-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .testimonial {
+            background: var(--light-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .testimonial::before {
+            content: '"';
+            font-size: 5rem;
+            color: var(--primary-color);
+            opacity: 0.2;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color), #1a68d1);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-light:hover {
+            background: #f0f0f0;
+        }
+        
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .social-icons {
+            margin-bottom: 30px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .menu {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .menu a {
+                margin: 5px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+                padding: 0 20px;
+            }
+            
+            .features-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <a href="home.html" class="logo"><img src="Gallery/Literacy Connect.png" alt="Literacy Connect Logo"></a>
+            <div class="menu">
+                <a href="home.html">HOME</a>
+                <a href="about.html">ABOUT</a>
+                <div class="dropdown">
+                    <a href="#">DASHBOARD <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="student-dashboard.html"><i class="fas fa-user-graduate"></i> STUDENT DASHBOARD</a>
+                        <a href="teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i> TEACHER DASHBOARD</a>
+                        <a href="donate.html"><i class="fas fa-hand-holding-heart"></i> DONATION DASHBOARD</a>
+                        <a href="volunteer.html"><i class="fas fa-hands-helping"></i> VOLUNTEER DASHBOARD</a>
+                    </div>
+                </div>
+                <a href="contact.html">CONTACT</a>
+                <a href="settings.html">SETTINGS</a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>Empowering Through Literacy</h1>
+        <p>Connecting students, teachers, donors, and volunteers to bridge the educational gap and create opportunities for lifelong learning.</p>
+        <a href="about.html" class="btn">Learn More</a>
+    </section>
+    
+    <section class="features">
+        <h2 class="section-title">Why Literacy Connect?</h2>
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Comprehensive Learning</h3>
+                <p>Access to a wide range of educational resources tailored to different learning levels and styles.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Community Support</h3>
+                <p>A network of volunteers and donors committed to making education accessible to all.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Progress Tracking</h3>
+                <p>Monitor learning progress with our intuitive dashboard and personalized feedback system.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">5,000+</div>
+                <div class="stat-label">Students Helped</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1,200+</div>
+                <div class="stat-label">Volunteers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">300+</div>
+                <div class="stat-label">Schools Partnered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10M+</div>
+                <div class="stat-label">Resources Shared</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials">
+        <h2 class="section-title">Success Stories</h2>
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <p class="testimonial-text">Literacy Connect changed my life. As a volunteer, I've seen firsthand how this platform helps students who otherwise wouldn't have access to quality education materials.</p>
+                <p class="testimonial-author">- Sarah Johnson, Volunteer Tutor</p>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Thanks to the resources I found through Literacy Connect, I was able to improve my reading skills enough to get into college. I'm forever grateful for this community.</p>
+                <p class="testimonial-author">- Miguel Rodriguez, Student</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Whether you want to learn, teach, donate, or volunteer, Literacy Connect provides the tools and community to help you achieve your educational goals.</p>
+        <div>
+            <a href="Signup Login.html" class="btn">I'm a Student</a>
+            <a href="volunteer.html" class="btn btn-light">I Want to Help</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="home.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p class="copyright">© 2023 Literacy Connect. All rights reserved.</p>
+    </footer>
+    
+    <script src="javascript.js"></script>
+</body>
+</html>
+

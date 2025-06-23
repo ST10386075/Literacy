@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard | Literacy Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Maintained your original navbar styles */
+        body, html {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .header {
+            padding: 5px;
+            color: #ffffff;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #add8e6;
+            z-index: 1000;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        .logo img {
+            height: 100px;
+        }
+        .menu {
+            display: flex;
+            position: relative;
+            color: aqua;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            z-index: 1001;
+            border-radius: 8px;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #e1f5fe;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Donor dashboard styles */
+        .dashboard-container {
+            margin-top: 130px;
+            padding: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .user-info {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-details h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .user-details p {
+            color: #7f8c8d;
+            margin: 5px 0 0;
+        }
+
+        .donation-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .donation-form {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .receipt-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .amount-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .amount-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .amount-option:hover {
+            border-color: #3498db;
+        }
+
+        .amount-option.selected {
+            border-color: #3498db;
+            background-color: rgba(52,152,219,0.1);
+        }
+
+        .receipt {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .receipt-header h3 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .receipt-label {
+            font-weight: 500;
+            color: #7f8c8d;
+        }
+
+        .receipt-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .receipt-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #3498db;
+            font-size: 18px;
+        }
+
+        .thank-you {
+            text-align: center;
+            margin-top: 30px;
+            color: #2ecc71;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <a href="home.html" class="logo"><img src="Gallery/Literacy Connect.png" alt="Logo"></a>
+            <div class="menu">
+                <a href="home.html">HOME</a>
+                <a href="about.html">ABOUT</a>
+                <div class="dropdown">
+                    <a href="#">DASHBOARD</a>
+                    <div class="dropdown-content">
+                        <a href="student-dashboard.html">STUDENT DASHBOARD</a>
+                        <a href="teacher-dashboard.html">TEACHER DASHBOARD</a>
+                        <a href="donate.html">DONATION DASHBOARD</a>
+                        <a href="volunteer.html">VOLUNTEER DASHBOARD</a>
+                    </div>
+                </div>
+                <a href="contact.html">CONTACT</a>
+                <a href="settings.html">SETTINGS</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Donor Info Section -->
+        <div class="user-info">
+            <div class="user-details">
+                <h2 id="donor-name">Welcome, Donor</h2>
+                <p>Make a difference with your contribution</p>
+            </div>
+            <div class="user-status">
+                <span style="background-color: #9b59b6; color: white; padding: 5px 10px; border-radius: 20px; font-size: 14px;">
+                    Donor Account
+                </span>
+            </div>
+        </div>
+
+        <!-- Donation Content -->
+        <div class="donation-container">
+            <!-- Donation Form -->
+            <div class="donation-form" id="donationForm">
+                <h2>Make a Donation</h2>
+                <p>Your support helps us continue our mission to promote literacy.</p>
+                
+                <form id="donationFormElement">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Donation Amount</label>
+                        <div class="amount-options">
+                            <div class="amount-option" data-amount="50">R50</div>
+                            <div class="amount-option" data-amount="100">R100</div>
+                            <div class="amount-option" data-amount="250">R250</div>
+                            <div class="amount-option" data-amount="500">R500</div>
+                        </div>
+                        <input type="number" id="customAmount" class="form-control" placeholder="Or enter custom amount">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" class="form-control" required>
+                            <option value="" disabled selected>Select payment method</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="creditCardFields" style="display: none;">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456">
+                        
+                        <div style="display: flex; gap: 15px; margin-top: 15px;">
+                            <div style="flex: 1;">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" class="form-control" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message (Optional)</label>
+                        <textarea id="message" class="form-control" placeholder="Add a personal message"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-heart"></i> Donate Now
+                    </button>
+                </form>
+            </div>
+
+            <!-- Receipt Container (initially hidden) -->
+            <div class="receipt-container" id="receiptContainer">
+                <h2>Donation Receipt</h2>
+                <p>Thank you for your generous contribution!</p>
+                
+                <div class="receipt">
+                    <div class="receipt-header">
+                        <h3>Literacy Connect</h3>
+                        <p>Donation Confirmation</p>
+                    </div>
+                    
+                    <div class="receipt-details">
+                        <div class="receipt-row">
+                            <span class="receipt-label">Transaction ID:</span>
+                            <span class="receipt-value" id="receiptTransactionId">LC-000000</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Date:</span>
+                            <span class="receipt-value" id="receiptDate">January 1, 2023</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Donor Name:</span>
+                            <span class="receipt-value" id="receiptName">John Doe</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Email:</span>
+                            <span class="receipt-value" id="receiptEmail">john@example.com</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Payment Method:</span>
+                            <span class="receipt-value" id="receiptPaymentMethod">Credit Card</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Amount:</span>
+                            <span class="receipt-value" id="receiptAmount">R100.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-row receipt-total">
+                        <span class="receipt-label">Total Donation:</span>
+                        <span class="receipt-value" id="receiptTotal">R100.00</span>
+                    </div>7
+                </div>
+                
+                <div class="thank-you">
+                    <p>Your support makes a difference!</p>
+                </div>
+                
+                <button id="printReceipt" class="btn btn-success" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                
+                <button id="newDonation" class="btn" style="width: 100%; margin-top: 10px; background: #f8f9fa;">
+                    <i class="fas fa-plus"></i> Make Another Donation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Amount selection
+            const amountOptions = document.querySelectorAll('.amount-option');
+            const customAmount = document.getElementById('customAmount');
+            
+            amountOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    amountOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    customAmount.value = '';
+                });
+            });
+            
+            customAmount.addEventListener('focus', function() {
+                amountOptions.forEach(opt => opt.classList.remove('selected'));
+            });
+            
+            customAmount.addEventListener('input', function() {
+                if (this.value) {
+                    amountOptions.forEach(opt => opt.classList.remove('selected'));
+                }
+            });
+            
+            // Show/hide credit card fields based on payment method
+            const paymentMethod = document.getElementById('paymentMethod');
+            const creditCardFields = document.getElementById('creditCardFields');
+            
+            paymentMethod.addEventListener('change', function() {
+                if (this.value === 'credit_card') {
+                    creditCardFields.style.display = 'block';
+                } else {
+                    creditCardFields.style.display = 'none';
+                }
+            });
+            
+            // Form submission
+            const donationForm = document.getElementById('donationFormElement');
+            const donationFormContainer = document.getElementById('donationForm');
+            const receiptContainer = document.getElementById('receiptContainer');
+            
+            donationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('fullName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                
+                // Get selected amount
+                let amount = 0;
+                const selectedOption = document.querySelector('.amount-option.selected');
+                if (selectedOption) {
+                    amount = parseFloat(selectedOption.getAttribute('data-amount'));
+                } else if (customAmount.value) {
+                    amount = parseFloat(customAmount.value);
+                }
+                
+                if (amount <= 0) {
+                    alert('Please enter a valid donation amount');
+                    return;
+                }
+                
+                const paymentMethodValue = document.getElementById('paymentMethod').value;
+                
+                // Generate receipt
+                document.getElementById('receiptName').textContent = name;
+                document.getElementById('receiptEmail').textContent = email;
+                document.getElementById('receiptPaymentMethod').textContent = 
+                    paymentMethodValue === 'credit_card' ? 'Credit Card' : 
+                    paymentMethodValue === 'paypal' ? 'PayPal' : 'Bank Transfer';
+                
+                document.getElementById('receiptAmount').textContent = '$' + amount.toFixed(2);
+                document.getElementById('receiptTotal').textContent = '$' + amount.toFixed(2);
+                
+                // Generate transaction ID and date
+                const transactionId = 'LC-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                const now = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const dateString = now.toLocaleDateString('en-US', options);
+                
+                document.getElementById('receiptTransactionId').textContent = transactionId;
+                document.getElementById('receiptDate').textContent = dateString;
+                
+                // Show receipt and hide form
+                donationFormContainer.style.display = 'none';
+                receiptContainer.style.display = 'block';
+                
+                // In a real application, you would process the payment here
+                // This is just a simulation
+                console.log('Processing donation:', {
+                    name,
+                    email,
+                    phone,
+                    amount,
+                    paymentMethod: paymentMethodValue,
+                    transactionId,
+                    date: now
+                });
+            });
+            
+            // Print receipt
+            document.getElementById('printReceipt').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // New donation button
+            document.getElementById('newDonation').addEventListener('click', function() {
+                donationForm.reset();
+                amountOptions.forEach(opt => opt.classList.remove('selected'));
+                creditCardFields.style.display = 'none';
+                receiptContainer.style.display = 'none';
+                donationFormContainer.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
